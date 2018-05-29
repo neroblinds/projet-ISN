@@ -1,0 +1,90 @@
+import math  # learn more: https://python.org/pypi/Mathf
+import random2  # learn more: https://python.org/pypi/random2
+
+#                   --- Parametres ---
+p = input("donne moi un nombre entier:")
+q = input("donne m'en un autre:")
+
+if q.isdigit() | p.isdigit(
+) == False:  #regarde si ce qui est entré est un chiffre
+	print(" donne moi des nombres stp ")
+else:
+	pass
+p = int(p)
+q = int(q)
+n = p * q
+wn = (p - 1) * (q - 1)
+print("p:" + str(p), "q:" + str(q), "n:" + str(n), "wn:" +
+      str(wn))  #donne les parametres qui vont servir a crypter un message
+
+
+#e = random2.randint(p, q)
+#print ("e:"+ str(e))
+def pgcd(a, b):  #creation d'une fonction qui calcule le pgcd
+	if b == 0:
+		return a
+	else:
+		r = a % b
+		return pgcd(a, r)
+
+
+for e in range(q, wn):  #calcul de e et définiton de la clé publique
+	e = q + 1
+	if pgcd(wn, e) != 1:
+		e += 1
+	else:
+		pass
+print("e:" + str(e))
+print("cle publique:( ", str(e), ",", str(n), ")")
+
+d = 0
+compteur = 0
+while compteur == 0:  # calcul d
+	if ((e * d % wn == 1) and (p < d) and (q < d) and (d < wn)):
+		compteur = 1
+	d = d + 1
+d = d - 1
+print("d:", d)
+print("cles privé : (", str(d), ",", str(n), ")")  #donne la clé privé
+
+cle_prive = [e, d]
+#                   --- Cryptage ---
+msg_code = input("Quel est le message:")
+l_msg = len(msg_code)
+i = 0
+liste_code_msg = []  #cree une liste auquel on va ajouter chaque valeur crypté
+while i < l_msg:
+	code_ascii = ord(
+	    msg_code[i])  # conversion de chaque lettres du msg en ASCII
+	crypt_modulo = code_ascii**e % n
+	liste_code_msg.append(crypt_modulo)
+	i += 1
+
+total = "".join(map(str, liste_code_msg))  #Enleve ces de la liste
+print(total)
+
+# essai de decodage
+"""
+reverse_code = liste_code_msg[0] % n
+print (reverse_code)
+reverse_code1 = (pow(reverse_code, d) % n)
+print (reverse_code1)
+msg_decode = chr(reverse_code1)
+print (msg_decode)
+"""
+
+a = 0
+t = []  # liste a laquel on va ajouter les valeurs décodées
+while a < len(liste_code_msg):  #decodage grace a une boucle
+	msg_f = ""
+	total2 = liste_code_msg[a]
+	rev_code = total2 % n
+	rev_code1 = pow(rev_code, int(d)) % n
+	msg_f = msg_f + str(rev_code1)
+	msg_f2 = chr(int(msg_f))  #stock et convertit les valeur ASCII en lettre
+	t.append(msg_f2)  #stock chaque lettres convertit par iteration
+	a += 1
+	#print( msg_f)
+	print(msg_f2)  # affiche les lettres du message une par une
+print(t)
+print("le message est:", "".join(t))  #transforme la liste en str
