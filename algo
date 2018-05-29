@@ -1,6 +1,3 @@
-import math  # learn more: https://python.org/pypi/Mathf
-import random2  # learn more: https://python.org/pypi/random2
-
 #                   --- Parametres ---
 p = input("donne moi un nombre entier:")
 q = input("donne m'en un autre:")
