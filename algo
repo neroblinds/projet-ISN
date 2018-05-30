@@ -11,12 +11,7 @@ p = int(p)
 q = int(q)
 n = p * q
 wn = (p - 1) * (q - 1)
-print("p:" + str(p), "q:" + str(q), "n:" + str(n), "wn:" +
-      str(wn))  #donne les parametres qui vont servir a crypter un message
 
-
-#e = random2.randint(p, q)
-#print ("e:"+ str(e))
 def pgcd(a, b):  #creation d'une fonction qui calcule le pgcd
 	if b == 0:
 		return a
@@ -24,15 +19,14 @@ def pgcd(a, b):  #creation d'une fonction qui calcule le pgcd
 		r = a % b
 		return pgcd(a, r)
 
-
 for e in range(q, wn):  #calcul de e et définiton de la clé publique
 	e = q + 1
 	if pgcd(wn, e) != 1:
 		e += 1
-	else:
-		pass
-print("e:" + str(e))
-print("cle publique:( ", str(e), ",", str(n), ")")
+print("p:" + str(p), "q:" + str(q), "n:" + str(n), "wn:" +
+      str(wn),"e:" + str(e)) #donne les parametres qui servirons a chiffrer le msg  
+
+print("cle publique:( ", str(e), ",", str(n), ")") #donne la clé publique 
 
 d = 0
 compteur = 0
@@ -42,7 +36,7 @@ while compteur == 0:  # calcul d
 	d = d + 1
 d = d - 1
 print("d:", d)
-print("cles privé : (", str(d), ",", str(n), ")")  #donne la clé privé
+print("cles privée : (", str(d), ",", str(n), ")")  #donne la clé privée
 
 cle_prive = [e, d]
 #                   --- Cryptage ---
@@ -57,7 +51,7 @@ while i < l_msg:
 	liste_code_msg.append(crypt_modulo)
 	i += 1
 
-total = "".join(map(str, liste_code_msg))  #Enleve ces de la liste
+total = "".join(map(str, liste_code_msg))  #Enleve "," de la liste
 print(total)
 
 # essai de decodage
@@ -69,19 +63,19 @@ print (reverse_code1)
 msg_decode = chr(reverse_code1)
 print (msg_decode)
 """
-
-a = 0
+#          ---Dechiffrement---
+j = 0
 t = []  # liste a laquel on va ajouter les valeurs décodées
-while a < len(liste_code_msg):  #decodage grace a une boucle
+while j < len(liste_code_msg):  #decodage grace a une boucle
 	msg_f = ""
-	total2 = liste_code_msg[a]
+	total2 = liste_code_msg[j]
 	rev_code = total2 % n
 	rev_code1 = pow(rev_code, int(d)) % n
 	msg_f = msg_f + str(rev_code1)
 	msg_f2 = chr(int(msg_f))  #stock et convertit les valeur ASCII en lettre
 	t.append(msg_f2)  #stock chaque lettres convertit par iteration
-	a += 1
+	j += 1
 	#print( msg_f)
-	print(msg_f2)  # affiche les lettres du message une par une
+	#print(msg_f2)  # affiche les lettres du message une par une
 print(t)
 print("le message est:", "".join(t))  #transforme la liste en str
